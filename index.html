@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerMap — Discover Your Future After 10th</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070b14;
+  --bg2: #0d1220;
+  --bg3: #111827;
+  --text: #f0f4ff;
+  --muted: #8892a4;
+  --border: rgba(255,255,255,0.08);
+  --sci: #3b82f6;   --sci-bg: rgba(59,130,246,0.12);  --sci-glow: rgba(59,130,246,0.3);
+  --com: #10b981;   --com-bg: rgba(16,185,129,0.12);  --com-glow: rgba(16,185,129,0.3);
+  --art: #f59e0b;   --art-bg: rgba(245,158,11,0.12);  --art-glow: rgba(245,158,11,0.3);
+  --dip: #a855f7;   --dip-bg: rgba(168,85,247,0.12);  --dip-glow: rgba(168,85,247,0.3);
+  --fut: #06b6d4;   --fut-bg: rgba(6,182,212,0.12);   --fut-glow: rgba(6,182,212,0.3);
+  --gov: #ef4444;   --gov-bg: rgba(239,68,68,0.12);   --gov-glow: rgba(239,68,68,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+.cursor{width:12px;height:12px;background:var(--sci);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s,background .2s;mix-blend-mode:screen}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(59,130,246,0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:transform .15s,width .2s,height .2s}
+
+/* CANVAS */
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(7,11,20,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--text);letter-spacing:-0.02em}
+.logo span{color:var(--sci)}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--sci);color:#fff;border:none;padding:.5rem 1.25rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:500;cursor:none;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:scale(1.05);box-shadow:0 0 20px var(--sci-glow)}
+
+/* SECTIONS */
+section{position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:6rem 0 4rem;overflow:hidden}
+.hero-content{max-width:700px}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--sci-bg);border:1px solid var(--sci-glow);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;color:var(--sci);font-weight:500;margin-bottom:1.5rem;animation:fadeUp .6s ease both}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,6vw,5rem);font-weight:800;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.5rem;animation:fadeUp .7s .1s ease both}
+.hero h1 .line2{color:var(--sci)}
+.hero h1 .line3{color:var(--art)}
+.hero p{font-size:1.1rem;color:var(--muted);max-width:520px;margin-bottom:2rem;font-weight:300;animation:fadeUp .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .7s .3s ease both}
+.btn-primary{background:var(--sci);color:#fff;border:none;padding:.8rem 2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:none;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--sci-glow)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);padding:.8rem 2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:none;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-ghost:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.2)}
+.hero-stats{display:flex;gap:3rem;margin-top:3.5rem;animation:fadeUp .7s .4s ease both}
+.stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;color:var(--text)}
+.stat-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* STREAM UNIVERSE */
+.streams-section{padding:6rem 0}
+.section-header{text-align:center;margin-bottom:3.5rem}
+.section-tag{display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sci);margin-bottom:.75rem}
+.section-header h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15}
+.section-header p{color:var(--muted);max-width:520px;margin:.75rem auto 0;font-size:1.05rem;font-weight:300}
+
+.streams-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.stream-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.75rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.stream-card::before{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity .3s}
+.stream-card:hover{transform:translateY(-4px)}
+.stream-card.sci:hover{border-color:var(--sci-glow);box-shadow:0 8px 40px var(--sci-glow)}
+.stream-card.sci::before{background:var(--sci-bg)}
+.stream-card.com:hover{border-color:var(--com-glow);box-shadow:0 8px 40px var(--com-glow)}
+.stream-card.com::before{background:var(--com-bg)}
+.stream-card.art:hover{border-color:var(--art-glow);box-shadow:0 8px 40px var(--art-glow)}
+.stream-card.art::before{background:var(--art-bg)}
+.stream-card.dip:hover{border-color:var(--dip-glow);box-shadow:0 8px 40px var(--dip-glow)}
+.stream-card.dip::before{background:var(--dip-bg)}
+.stream-card.fut:hover{border-color:var(--fut-glow);box-shadow:0 8px 40px var(--fut-glow)}
+.stream-card.fut::before{background:var(--fut-bg)}
+.stream-card.gov:hover{border-color:var(--gov-glow);box-shadow:0 8px 40px var(--gov-glow)}
+.stream-card.gov::before{background:var(--gov-bg)}
+.stream-card:hover::before{opacity:1}
+.stream-card > *{position:relative;z-index:1}
+.stream-icon{font-size:2.25rem;margin-bottom:1rem}
+.stream-card h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.4rem}
+.stream-card .tag{font-size:.75rem;font-weight:500;padding:.25rem .75rem;border-radius:100px;display:inline-block;margin-bottom:.75rem}
+.stream-card.sci .tag{background:var(--sci-bg);color:var(--sci)}
+.stream-card.com .tag{background:var(--com-bg);color:var(--com)}
+.stream-card.art .tag{background:var(--art-bg);color:var(--art)}
+.stream-card.dip .tag{background:var(--dip-bg);color:var(--dip)}
+.stream-card.fut .tag{background:var(--fut-bg);color:var(--fut)}
+.stream-card.gov .tag{background:var(--gov-bg);color:var(--gov)}
+.stream-card p{font-size:.875rem;color:var(--muted);line-height:1.6}
+.stream-card .careers-preview{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.career-pill{font-size:.72rem;padding:.2rem .65rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);transition:all .2s}
+.stream-card:hover .career-pill{border-color:rgba(255,255,255,0.15);color:var(--text)}
+.stream-arrow{position:absolute;bottom:1.5rem;right:1.5rem;font-size:1.2rem;color:var(--muted);transition:all .25s}
+.stream-card:hover .stream-arrow{color:var(--text);transform:translate(3px,-3px)}
+
+/* CAREER EXPLORER */
+.explorer-section{padding:6rem 0;background:var(--bg2)}
+.explorer-layout{display:grid;grid-template-columns:280px 1fr;gap:2rem;margin-top:2rem}
+.explorer-sidebar{}
+.sidebar-title{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.career-list{display:flex;flex-direction:column;gap:.35rem;max-height:600px;overflow-y:auto;padding-right:.5rem}
+.career-list::-webkit-scrollbar{width:3px}
+.career-list::-webkit-scrollbar-track{background:transparent}
+.career-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.career-item{padding:.6rem 1rem;border-radius:10px;cursor:pointer;font-size:.875rem;color:var(--muted);transition:all .15s;border:1px solid transparent;display:flex;align-items:center;gap:.5rem}
+.career-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.career-item.active{background:var(--sci-bg);color:var(--sci);border-color:var(--sci-glow)}
+.career-item .ci-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.career-detail{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:2rem;animation:fadeUp .3s ease}
+
+.career-detail-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.career-title-wrap h2{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:700;margin-bottom:.25rem}
+.career-title-wrap p{color:var(--muted);font-size:.95rem;font-weight:300}
+.salary-badge{background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#10b981;padding:.5rem 1.25rem;border-radius:100px;font-size:.85rem;font-weight:500}
+
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.metric-box{background:var(--bg2);border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:.15rem}
+.metric-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.metric-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-top:.5rem}
+.metric-fill{height:4px;border-radius:2px}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.info-item{background:var(--bg2);border-radius:12px;padding:1rem 1.25rem}
+.info-item .info-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}
+.info-item .info-val{font-size:.9rem;color:var(--text);line-height:1.5}
+.tag-list{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag-pill{font-size:.75rem;padding:.25rem .75rem;border-radius:100px;background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border)}
+
+/* QUIZ */
+.quiz-section{padding:6rem 0}
+.quiz-container{max-width:680px;margin:0 auto;background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:2.5rem;margin-top:2.5rem}
+.quiz-progress{display:flex;gap:.35rem;margin-bottom:2rem}
+.qp-dot{flex:1;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;transition:background .3s}
+.qp-dot.done{background:var(--sci)}
+.qp-dot.active{background:rgba(59,130,246,0.5)}
+.quiz-q{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:.5rem;line-height:1.3}
+.quiz-sub{color:var(--muted);margin-bottom:1.75rem;font-size:.95rem}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.qopt{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem 1.25rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.75rem;text-align:left}
+.qopt:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.03)}
+.qopt.selected{border-color:var(--sci);background:var(--sci-bg)}
+.qopt-icon{font-size:1.4rem;flex-shrink:0}
+.qopt-text{font-size:.9rem;color:var(--muted);line-height:1.4}
+.qopt:hover .qopt-text,.qopt.selected .qopt-text{color:var(--text)}
+
+/* RESULT */
+.quiz-result{animation:fadeUp .4s ease}
+.result-header{text-align:center;padding:1rem 0 2rem}
+.result-emoji{font-size:3rem;margin-bottom:.75rem}
+.result-header h2{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;margin-bottom:.5rem}
+.result-header p{color:var(--muted);font-size:.95rem;max-width:480px;margin:0 auto;line-height:1.6}
+.result-stream{display:inline-block;padding:.4rem 1.25rem;border-radius:100px;font-size:.9rem;font-weight:600;margin-bottom:1.5rem}
+.result-careers{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1.5rem}
+.rc{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem}
+.rc h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}
+.rc p{font-size:.8rem;color:var(--muted)}
+.rc .rc-sal{font-size:.8rem;color:#10b981;margin-top:.35rem}
+
+/* COMPARE */
+.compare-section{padding:6rem 0;background:var(--bg2)}
+.compare-table{width:100%;border-collapse:collapse;margin-top:2rem}
+.compare-table th{padding:1rem 1.25rem;text-align:left;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.compare-table td{padding:.9rem 1.25rem;font-size:.875rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:rgba(255,255,255,0.02)}
+.factor-name{color:var(--text);font-weight:500}
+.dots-row{display:flex;gap:3px}
+.d{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.08)}
+.d.f-sci{background:var(--sci)}
+.d.f-com{background:var(--com)}
+.d.f-art{background:var(--art)}
+.d.f-dip{background:var(--dip)}
+
+/* SC SECTION */
+.sc-section{padding:6rem 0}
+.sc-banner{background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(168,85,247,0.08));border:1px solid rgba(59,130,246,0.2);border-radius:20px;padding:2rem 2.5rem;margin-bottom:2.5rem}
+.sc-banner h3{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:.5rem}
+.sc-banner p{color:var(--muted);font-size:.95rem;line-height:1.7;max-width:620px}
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.sc-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.25rem}
+.sc-card .sc-icon{font-size:1.5rem;margin-bottom:.5rem}
+.sc-card h4{font-size:.95rem;font-weight:600;margin-bottom:.35rem}
+.sc-card p{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* MYTHS */
+.myths-section{padding:6rem 0;background:var(--bg2)}
+.myth-item{display:flex;gap:1.5rem;padding:1.75rem 0;border-bottom:1px solid var(--border)}
+.myth-item:last-child{border-bottom:none}
+.myth-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:rgba(255,255,255,0.06);flex-shrink:0;min-width:2.5rem;line-height:1}
+.myth-body{}
+.myth-false{font-size:.8rem;font-weight:600;color:var(--gov);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}
+.myth-text{font-size:.875rem;text-decoration:line-through;color:var(--muted);margin-bottom:.5rem}
+.myth-truth-label{font-size:.8rem;font-weight:600;color:var(--com);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}
+.myth-truth-text{font-size:.95rem;color:var(--text);line-height:1.7}
+
+/* CTA */
+.cta-section{padding:8rem 0;text-align:center}
+.cta-section h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:1rem;line-height:1.1}
+.cta-section p{color:var(--muted);font-size:1.1rem;max-width:480px;margin:0 auto 2.5rem;font-weight:300}
+
+/* FOOTER */
+footer{padding:2rem;text-align:center;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:1rem 1.25rem}
+  .nav-links{display:none}
+  .streams-grid{grid-template-columns:1fr 1fr}
+  .explorer-layout{grid-template-columns:1fr}
+  .explorer-sidebar{display:none}
+  .metrics-grid{grid-template-columns:1fr 1fr}
+  .info-grid{grid-template-columns:1fr}
+  .quiz-opts{grid-template-columns:1fr}
+  .compare-table{font-size:.8rem}
+  .sc-grid{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:1.5rem}
+  .hero h1{font-size:2.5rem}
+}
+@media(max-width:480px){
+  .streams-grid{grid-template-columns:1fr}
+  .sc-grid{grid-template-columns:1fr}
+  .result-careers{grid-template-columns:1fr}
+  .metrics-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="logo">Career<span>Map</span></div>
+  <div class="nav-links">
+    <a href="#streams">Streams</a>
+    <a href="#explorer">Careers</a>
+    <a href="#quiz">Find My Fit</a>
+    <a href="#compare">Compare</a>
+    <a href="#sc">SC Benefits</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Take the Quiz</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">🌟 Post-10th Career Guide 2024 · India</div>
+      <h1>
+        Your stream choice<br>
+        <span class="line2">doesn't define you.</span><br>
+        <span class="line3">Your curiosity does.</span>
+      </h1>
+      <p>Science. Commerce. Arts. Diploma. ITI. Skill-based. There are 100+ career paths after 10th — explore them visually, without pressure.</p>
+      <div class="hero-btns">
+        <a href="#quiz" class="btn-primary">Find my career fit →</a>
+        <a href="#streams" class="btn-ghost">Explore all streams</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">100+</div><div class="stat-label">Career paths</div></div>
+        <div><div class="stat-num">6</div><div class="stat-label">Stream options</div></div>
+        <div><div class="stat-num">₹0</div><div class="stat-label">Cost to explore</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAMS -->
+<section class="streams-section" id="streams">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Streams Universe</div>
+      <h2>Every stream is a<br>door to a great future</h2>
+      <p>Click any stream to explore careers, subjects, exams, and salary potential</p>
+    </div>
+    <div class="streams-grid reveal" id="streams-grid">
+
+      <div class="stream-card sci" onclick="exploreStream('science')">
+        <div class="stream-icon">🔬</div>
+        <h3>Science</h3>
+        <span class="tag">PCM / PCB / PCMB</span>
+        <p>Engineering, Medical, AI, Research, Aviation, Robotics, Architecture, Defence</p>
+        <div class="careers-preview">
+          <span class="career-pill">Software Engineer</span>
+          <span class="career-pill">Doctor</span>
+          <span class="career-pill">Data Scientist</span>
+          <span class="career-pill">Pilot</span>
+          <span class="career-pill">+ 20 more</span>
+        </div>
+        <div class="stream-arrow">↗</div>
+      </div>
+
+      <div class="stream-card com" onclick="exploreStream('commerce')">
+        <div class="stream-icon">📈</div>
+        <h3>Commerce</h3>
+        <span class="tag">With / Without Maths</span>
+        <p>CA, Finance, Banking, Marketing, MBA, Stock Market, Entrepreneurship</p>
+        <div class="careers-preview">
+          <span class="career-pill">CA</span>
+          <span class="career-pill">Investment Banker</span>
+          <span class="career-pill">MBA</span>
+          <span class="career-pill">Entrepreneur</span>
+          <span class="career-pill">+ 15 more</span>
+        </div>
+        <div class="stream-arrow">↗</div>
+      </div>
+
+      <div class="stream-card art" onclick="exploreStream('arts')">
+        <div class="stream-icon">🎨</div>
+        <h3>Arts / Humanities</h3>
+        <span class="tag">Most diverse stream</span>
+        <p>IAS, Law, Psychology, Journalism, Design, International Relations, Media</p>
+        <div class="careers-preview">
+          <span class="career-pill">IAS Officer</span>
+          <span class="career-pill">Lawyer</span>
+          <span class="career-pill">Journalist</span>
+          <span class="career-pill">Psychologist</span>
+          <span class="career-pill">+ 18 more</span>
+        </div>
+        <div class="stream-arrow">↗</div>
+      </div>
+
+      <div class="stream-card dip" onclick="exploreStream('diploma')">
+        <div class="stream-icon">🛠️</div>
+        <h3>Diploma / ITI</h3>
+        <span class="tag">Earn in 2–3 years</span>
+        <p>Polytechnic, ITI trades, Animation, Web Dev, Hotel Management, Event Management</p>
+        <div class="careers-preview">
+          <span class="career-pill">Web Developer</span>
+          <span class="career-pill">Animator</span>
+          <span class="career-pill">Electrician</span>
+          <span class="career-pill">Hotel Mgmt</span>
+          <span class="career-pill">+ 12 more</span>
+        </div>
+        <div class="stream-arrow">↗</div>
+      </div>
+
+      <div class="stream-card fut" onclick="exploreStream('future')">
+        <div class="stream-icon">🤖</div>
+        <h3>Future Careers</h3>
+        <span class="tag">High demand 2030+</span>
+        <p>AI/ML, Cybersecurity, Creator Economy, Remote Jobs, Climate Tech, VR/AR, Startups</p>
+        <div class="careers-preview">
+          <span class="career-pill">AI Engineer</span>
+          <span class="career-pill">Cybersecurity</span>
+          <span class="career-pill">Content Creator</span>
+          <span class="career-pill">VR Dev</span>
+          <span class="career-pill">+ 10 more</span>
+        </div>
+        <div class="stream-arrow">↗</div>
+      </div>
+
+      <div class="stream-card gov" onclick="exploreStream('govt')">
+        <div class="stream-icon">🏛️</div>
+        <h3>Government Jobs</h3>
+        <span class="tag">Stability + respect</span>
+        <p>UPSC, SSC, Banking, Railways, Teaching, Defence, PSUs — open to all streams</p>
+        <div class="careers-preview">
+          <span class="career-pill">IAS/IPS</span>
+          <span class="career-pill">Bank PO</span>
+          <span class="career-pill">Railway JE</span>
+          <span class="career-pill">Teacher</span>
+          <span class="career-pill">+ 14 more</span>
+        </div>
+        <div class="stream-arrow">↗</div>
+      </div>
+    </div>
+
+    <!-- STREAM DETAIL POPUP -->
+    <div id="stream-detail-box" style="display:none;margin-top:2rem;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;animation:fadeUp .3s ease">
+      <div id="stream-detail-content"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER EXPLORER -->
+<section class="explorer-section" id="explorer">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Career Explorer</div>
+      <h2>Deep dive into<br>any career</h2>
+      <p>Full details — salary, exams, colleges, AI-proof score, and government opportunities</p>
+    </div>
+    <div class="explorer-layout">
+      <div class="explorer-sidebar reveal">
+        <div class="sidebar-title">All careers</div>
+        <div class="career-list" id="career-list"></div>
+      </div>
+      <div id="career-detail-panel" class="reveal"></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-section" id="quiz">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Career Fit Quiz</div>
+      <h2>Find your best path<br>in 5 questions</h2>
+      <p>No right or wrong answers. Just honest choices.</p>
+    </div>
+    <div class="quiz-container reveal" id="quiz-wrap"></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="compare-section" id="compare">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Stream Comparison</div>
+      <h2>Science vs Commerce<br>vs Arts vs Diploma</h2>
+      <p>8 key factors that actually matter for your future</p>
+    </div>
+    <div class="reveal" style="overflow-x:auto">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th style="color:var(--sci)">🔬 Science</th>
+          <th style="color:var(--com)">📈 Commerce</th>
+          <th style="color:var(--art)">🎨 Arts</th>
+          <th style="color:var(--dip)">🛠️ Diploma</th>
+        </tr>
+      </thead>
+      <tbody id="compare-body"></tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- SC BENEFITS -->
+<section class="sc-section" id="sc">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">SC Reservation Guide</div>
+      <h2>Your constitutional rights<br>are real advantages</h2>
+      <p>Use every benefit available to you — practically and confidently</p>
+    </div>
+    <div class="reveal">
+    <div class="sc-banner">
+      <h3>You are not behind — you have a headstart in many places</h3>
+      <p>As an SC category student, you have reserved seats at IITs, NITs, AIIMS, NLUs, and Central Universities. Lower cutoffs, fee waivers, age relaxation in UPSC, and multiple scholarships. This is your right — use it fully.</p>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-card"><div class="sc-icon">🏫</div><h4>IIT / NIT Seats</h4><p>15% reserved seats. SC cutoff is significantly lower. Real chance at top engineering colleges with good JEE preparation.</p></div>
+      <div class="sc-card"><div class="sc-icon">🏥</div><h4>AIIMS / Medical</h4><p>15% seats reserved in NEET. SC cutoff ~50th percentile vs ~90th for general. Major medical opportunity.</p></div>
+      <div class="sc-card"><div class="sc-icon">💰</div><h4>Fee Waiver</h4><p>Full or partial fee waiver at most government colleges — IITs, NITs, Central Universities all included.</p></div>
+      <div class="sc-card"><div class="sc-icon">📜</div><h4>Post-Matric Scholarship</h4><p>Up to ₹2 lakh/year from Ministry of Social Justice. Apply on scholarships.gov.in (NSP portal).</p></div>
+      <div class="sc-card"><div class="sc-icon">⚖️</div><h4>UPSC Advantages</h4><p>5 extra attempts + 5 years age relaxation + lower prelims cutoff. More chances to clear India's toughest exam.</p></div>
+      <div class="sc-card"><div class="sc-icon">🏠</div><h4>Hostel Priority</h4><p>Free or subsidized hostels at most central universities and IITs. No need to pay for accommodation.</p></div>
+      <div class="sc-card"><div class="sc-icon">⚖️</div><h4>NLU Law Seats</h4><p>15% reserved at all National Law Universities. Real path to becoming a top lawyer even at lower CLAT scores.</p></div>
+      <div class="sc-card"><div class="sc-icon">🎓</div><h4>Dr. Ambedkar Scholarship</h4><p>State-level scholarship covering tuition, books, and living expenses for meritorious SC students.</p></div>
+      <div class="sc-card"><div class="sc-icon">🏦</div><h4>Free Coaching Scheme</h4><p>Government-funded free coaching for SC students for UPSC, SSC, Banking, and Professional exams.</p></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- MYTHS -->
+<section class="myths-section" id="myths">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Myth Busters</div>
+      <h2>Things your relatives<br>believe that aren't true</h2>
+    </div>
+    <div class="reveal" id="myths-wrap"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container reveal">
+    <h2>Your future is not decided<br>by one exam score.</h2>
+    <p>Every great career starts with one curious step. You just took it.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="#quiz" class="btn-primary">Take the quiz now →</a>
+      <a href="#explorer" class="btn-ghost">Explore all careers</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>CareerMap · Made for every student who ever felt lost after 10th · India 🇮🇳</p>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-6)+'px';cursor.style.top=(my-6)+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=(rx-18)+'px';ring.style.top=(ry-18)+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.stream-card,.career-item,.qopt').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';ring.style.width='60px';ring.style.height='60px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.width='36px';ring.style.height='36px'});
+});
+
+// STARS
+const canvas=document.getElementById('stars');
+const ctx=canvas.getContext('2d');
+let W,H,stars=[];
+function initStars(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;stars=[];for(let i=0;i<160;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),s:Math.random()*.0005+.0001})}
+function drawStars(){ctx.clearRect(0,0,W,H);stars.forEach(s=>{s.a+=s.s;if(s.a>1||s.a<0)s.s*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,200,255,${s.a*0.6})`;ctx.fill()});requestAnimationFrame(drawStars)}
+initStars();drawStars();
+window.addEventListener('resize',initStars);
+
+// SCROLL REVEAL
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// DATA
+const careers={
+  software:{title:'Software Engineer',tagline:'Build apps, websites, and systems used by millions of people.',salary:'₹4–40 LPA India · $70k–$200k+ global',demand:5,aiproof:3,diff:4,duration:'4 yr B.Tech CS or 6–18 month bootcamp',exams:'JEE Main, BITSAT, State CETs (or no exam for bootcamp)',skills:['Coding','Algorithms','Problem-solving','Teamwork'],colleges:'IITs, NITs, VIT, BITS, SRM + online bootcamps',govt:'PSUs: ISRO, BHEL, NIC · GATE for M.Tech',stream:'sci'},
+  doctor:{title:'Doctor (MBBS)',tagline:'Diagnose, treat, and heal patients. One of the most respected careers.',salary:'₹6–50 LPA India · High globally',demand:5,aiproof:5,diff:5,duration:'5.5 yr MBBS + internship',exams:'NEET-UG (single exam for all medical colleges)',skills:['Biology','Chemistry','Empathy','Attention to detail'],colleges:'AIIMS, JIPMER, State Government Medical Colleges',govt:'Government hospitals · UPSC Medical Services',stream:'sci'},
+  ca:{title:'Chartered Accountant',tagline:'Audit companies, manage taxes, and become a top financial expert.',salary:'₹7–50 LPA India · High international demand',demand:4,aiproof:3,diff:5,duration:'4–5 years (Foundation → Inter → Final via ICAI)',exams:'CA Foundation → CA Intermediate → CA Final',skills:['Maths','Accounting','Law','Analytical thinking'],colleges:'ICAI (self-study) · No specific college needed',govt:'Income Tax Dept, CAG, Finance Ministry',stream:'com'},
+  ias:{title:'IAS / Civil Services Officer',tagline:'Lead India — become a District Collector, diplomat, or policy-maker.',salary:'₹56k–₹2.5L/month + perks, bungalow, car',demand:5,aiproof:5,diff:5,duration:'Any graduation (3 yr) + UPSC prep (2–4 yr)',exams:'UPSC CSE: Prelims → Mains (9 papers) → Interview',skills:['General knowledge','Leadership','Essay writing','Decision-making'],colleges:'Any university for graduation · then self-study or coaching',govt:'Direct central/state government — IAS/IPS/IFS posting',stream:'art'},
+  design:{title:'UI/UX Designer',tagline:'Design digital products that millions of people love to use.',salary:'₹4–25 LPA India · $60k–$130k global',demand:5,aiproof:4,diff:3,duration:'1–3 yr diploma or self-taught via online courses',exams:'NID entrance, NIFT, CEED (optional)',skills:['Figma','User psychology','Visual design','Prototyping'],colleges:'NID, NIFT, Symbiosis · Online: Coursera, DesignLab',govt:'NIFT, PSU design roles, Govt digital services',stream:'dip'},
+  aiml:{title:'AI / ML Engineer',tagline:'Build the intelligence behind ChatGPT, self-driving cars, and medical diagnosis.',salary:'₹10–80 LPA India · $130k–$400k global',demand:5,aiproof:5,diff:5,duration:'B.Tech CS + specialization or 2 yr PG program',exams:'JEE, GATE, GRE (for international MS programs)',skills:['Python','Deep Learning','Mathematics','Research'],colleges:'IIT, IISc, IIIT Hyderabad · Stanford, CMU (global)',govt:'DRDO, ISRO, Govt AI Mission, NIC',stream:'fut'},
+  cyber:{title:'Cybersecurity Expert',tagline:'Protect organizations from hackers and cyberattacks. Fastest-growing field globally.',salary:'₹5–40 LPA India · $80k–$200k global',demand:5,aiproof:5,diff:4,duration:'B.Tech CS + certifications or direct cert path',exams:'JEE (optional) · CEH, CISSP, CompTIA Security+',skills:['Networking','Ethical hacking','Linux','Problem-solving'],colleges:'IITs, NITs, CDAC · Online: Cybrary, SANS Institute',govt:'CERT-IN, DRDO, NIC, Intelligence agencies',stream:'fut'},
+  lawyer:{title:'Lawyer / Advocate',tagline:'Argue cases, draft contracts, fight for rights — in courts or boardrooms.',salary:'₹3–50 LPA India · $70k–$300k global',demand:4,aiproof:4,diff:4,duration:'5 yr integrated BA LLB or 3 yr LLB after graduation',exams:'CLAT, AILET, LSAT India',skills:['Argumentation','Legal research','Writing','Critical thinking'],colleges:'NLSIU Bangalore, NLU Delhi, Symbiosis Law School',govt:'Judiciary, Public Prosecutor, Govt Advocate',stream:'art'},
+  pilot:{title:'Commercial Pilot',tagline:'Fly the world. One of the most aspirational careers with strong global demand.',salary:'₹1.5–20 LPA India · $80k–$200k global',demand:4,aiproof:4,diff:4,duration:'CPL: 1.5–2 years after 12th PCM',exams:'DGCA CPL exams · Class 1 medical certificate required',skills:['Maths','Physics','Decision-making','Spatial awareness'],colleges:'Indira Gandhi RGNAA · Bombay Flying Club · CAE Oxford',govt:'Indian Air Force via NDA / AFCAT',stream:'sci'},
+  youtube:{title:'Content Creator',tagline:'Build an audience around your passion. Monetize through ads, brands, and courses.',salary:'₹0 to crores (fully skill-dependent)',demand:5,aiproof:4,diff:2,duration:'Start today — no degree required',exams:'None required — skill and consistency are everything',skills:['Communication','Video editing','Storytelling','Consistency'],colleges:'Self-made · Online courses on editing and marketing',govt:'Not applicable — fully independent career',stream:'dip'},
+  mba:{title:'MBA Manager',tagline:'Lead teams, run businesses, and make top-level strategic decisions.',salary:'₹8–80 LPA India · $80k–$200k global',demand:5,aiproof:4,diff:4,duration:'2 yr MBA after any graduation degree',exams:'CAT, XAT (India) · GMAT (global programs)',skills:['Leadership','Finance','Communication','Strategy'],colleges:'IIM A/B/C, XLRI, FMS, ISB Hyderabad',govt:'IAS parallel path · PSU management roles',stream:'com'},
+  psychologist:{title:'Psychologist',tagline:'Help people understand their minds and live healthier, more fulfilling lives.',salary:'₹3–20 LPA India · Very high demand globally',demand:5,aiproof:5,diff:3,duration:'BA + MA Psychology or B.Sc / M.Sc Psychology',exams:'TISS, JNU, BHU, NIMHANS PG entrance',skills:['Empathy','Active listening','Research','Counselling'],colleges:'NIMHANS Bangalore, TISS Mumbai, JNU, Delhi University',govt:'Govt hospitals, Army counsellors, School psychologists',stream:'art'},
+  architect:{title:'Architect',tagline:'Design buildings, cities, and the spaces where millions of people live and work.',salary:'₹3–25 LPA India · $70k–$150k global',demand:4,aiproof:4,diff:4,duration:'5 yr B.Arch program',exams:'NATA (National Aptitude Test in Architecture)',skills:['Drawing','Maths','Creativity','AutoCAD / Revit'],colleges:'SPA Delhi, CEPT Ahmedabad, NIT Architecture depts',govt:'PWD, CPWD, Smart Cities Mission, DUDA',stream:'sci'},
+  teacher:{title:'Teacher / Educator',tagline:'Shape the next generation. One of the most impactful and AI-proof careers.',salary:'₹2–15 LPA India · ₹30–80 LPA teaching abroad',demand:5,aiproof:5,diff:2,duration:'B.Ed after graduation · or D.El.Ed for primary',exams:'CTET, State TET, KVS, NVS recruitment exams',skills:['Communication','Subject expertise','Patience','Creativity'],colleges:'RIE, NCERT, B.Ed colleges · KVS direct recruitment',govt:'KVS, NVS, State Govt Schools — very stable jobs',stream:'art'},
+  webdev:{title:'Full-Stack Developer',tagline:'Build complete web applications — front end to back end — from scratch.',salary:'₹4–30 LPA India · $70k–$150k remote',demand:5,aiproof:3,diff:4,duration:'6–18 month bootcamp or 4 yr B.Tech CS',exams:'No exam needed — portfolio matters most',skills:['HTML/CSS/JS','React','Node.js','Databases'],colleges:'Self-taught + freeCodeCamp · B.Tech from any college',govt:'NIC, Government digital projects',stream:'dip'},
+  banker:{title:'Bank Officer / Finance Pro',tagline:'Manage money, loans, and investments for individuals and major businesses.',salary:'₹4–30 LPA India · Global banking careers available',demand:4,aiproof:3,diff:3,duration:'3 yr B.Com or BBA + banking exams',exams:'IBPS PO, SBI PO, RBI Grade B',skills:['Finance','Communication','Analysis','Customer focus'],colleges:'Any good commerce college + bank exam coaching',govt:'SBI, RBI, Nationalised Banks — secure govt jobs',stream:'com'},
+  defence:{title:'Army / Navy / Air Force Officer',tagline:'Defend the nation, lead soldiers, and live a disciplined respected life.',salary:'₹7–17 LPA + full allowances, house, vehicle',demand:4,aiproof:5,diff:4,duration:'NDA: 3 yr after 12th · CDS after graduation',exams:'NDA, CDS, AFCAT, Technical Entry Scheme',skills:['Physical fitness','Leadership','Decision-making','Discipline'],colleges:'NDA Pune, OTA Chennai, IMA Dehradun',govt:'Direct defence service — central govt',stream:'gov'},
+};
+
+// CAREER LIST
+const careerKeys=Object.keys(careers);
+const streamColors={sci:'var(--sci)',com:'var(--com)',art:'var(--art)',dip:'var(--dip)',fut:'var(--fut)',gov:'var(--gov)'};
+document.getElementById('career-list').innerHTML=careerKeys.map(k=>`
+  <div class="career-item" id="ci-${k}" onclick="showCareer('${k}')">
+    <div class="ci-dot" style="background:${streamColors[careers[k].stream]||'var(--sci)'}"></div>
+    ${careers[k].title}
+  </div>`).join('');
+showCareer('software');
+
+function showCareer(key){
+  const c=careers[key];
+  document.querySelectorAll('.career-item').forEach(el=>el.classList.remove('active'));
+  const ci=document.getElementById('ci-'+key);
+  if(ci){ci.classList.add('active')}
+  const col=streamColors[c.stream]||'var(--sci)';
+  const stars5=n=>[1,2,3,4,5].map(i=>`<span style="color:${i<=n?col:'rgba(255,255,255,0.12)'}">●</span>`).join(' ');
+  document.getElementById('career-detail-panel').innerHTML=`
+    <div class="career-detail">
+      <div class="career-detail-top">
+        <div class="career-title-wrap">
+          <h2>${c.title}</h2>
+          <p>${c.tagline}</p>
+        </div>
+        <div class="salary-badge">💰 ${c.salary}</div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="metric-val" style="color:${col}">${stars5(c.demand)}</div>
+          <div class="metric-label">Future demand</div>
+          <div class="metric-bar"><div class="metric-fill" style="width:${c.demand*20}%;background:${col}"></div></div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" style="color:#10b981">${stars5(c.aiproof)}</div>
+          <div class="metric-label">AI-proof score</div>
+          <div class="metric-bar"><div class="metric-fill" style="width:${c.aiproof*20}%;background:#10b981"></div></div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" style="color:#f59e0b">${stars5(c.diff)}</div>
+          <div class="metric-label">Difficulty level</div>
+          <div class="metric-bar"><div class="metric-fill" style="width:${c.diff*20}%;background:#f59e0b"></div></div>
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-lbl">Duration</div><div class="info-val">${c.duration}</div></div>
+        <div class="info-item"><div class="info-lbl">Entrance exams</div><div class="info-val">${c.exams}</div></div>
+        <div class="info-item"><div class="info-lbl">Top colleges</div><div class="info-val">${c.colleges}</div></div>
+        <div class="info-item"><div class="info-lbl">Government opportunities</div><div class="info-val">${c.govt}</div></div>
+      </div>
+      <div class="info-item" style="margin-bottom:1rem">
+        <div class="info-lbl">Key skills needed</div>
+        <div class="tag-list" style="margin-top:.5rem">${c.skills.map(s=>`<span class="tag-pill">${s}</span>`).join('')}</div>
+      </div>
+    </div>`;
+}
+
+// STREAM DETAIL
+const streamData={
+  science:{color:'var(--sci)',label:'Science Stream',desc:'Best for logical thinkers who love how things work. Leads to the highest-paying technical careers and most competitive exams.',subs:['PCM — Physics, Chemistry, Maths (Engineering focus)','PCB — Physics, Chemistry, Biology (Medical focus)','PCMB — All four (maximum flexibility)'],top:['software','doctor','aiml','pilot','architect','defence']},
+  commerce:{color:'var(--com)',label:'Commerce Stream',desc:'Best for people who understand money, strategy, and how businesses work. Extremely flexible and growing.',subs:['Commerce with Maths — Opens banking, actuarial, CA path','Commerce without Maths — BBA, Marketing, HR path','Business Studies + Economics — Strong entrepreneurship base'],top:['ca','mba','banker','psychologist','webdev','youtube']},
+  arts:{color:'var(--art)',label:'Arts / Humanities',desc:'Best for thinkers, communicators, and change-makers. The most underrated stream with the highest AI-proof careers.',subs:['History, Geography, Political Science — UPSC goldmine','Psychology, Sociology — Mental health boom careers','Fine Arts, Music, Literature — Creative and design fields'],top:['ias','lawyer','teacher','psychologist','design','youtube']},
+  diploma:{color:'var(--dip)',label:'Diploma / ITI / Skill Route',desc:'Best for practical learners who want to earn sooner. You can be earning ₹30–40k/month within 1–2 years.',subs:['Polytechnic Diploma — 3 years, lateral entry to B.Tech','ITI Trades — 1–2 years, skilled trade certification','Short courses — 3–6 months, web dev, design, digital marketing'],top:['webdev','design','youtube','architect','teacher','banker']},
+  future:{color:'var(--fut)',label:'Future & Modern Careers',desc:'Careers that will explode in the next 10 years. Accessible from any stream with the right skills.',subs:['Any stream + self-learning + online certifications','Tech bootcamps — 6 months to job-ready','Build portfolio + get remote global jobs'],top:['aiml','cyber','youtube','webdev','design','software']},
+  govt:{color:'var(--gov)',label:'Government Job Paths',desc:'Every stream leads to government jobs. Stability, respect, perks, and pension — all with SC reservation advantages.',subs:['After 12th: NDA, Railway Group D, SSC CHSL','After Graduation: UPSC, SSC CGL, IBPS Banking','Any stream eligible for most central government exams'],top:['ias','defence','teacher','banker','doctor','lawyer']},
+};
+function exploreStream(key){
+  const s=streamData[key];
+  const box=document.getElementById('stream-detail-box');
+  const content=document.getElementById('stream-detail-content');
+  content.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+      <div><h3 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:${s.color};margin-bottom:.4rem">${s.label}</h3><p style="color:var(--muted);max-width:540px;font-size:.9rem">${s.desc}</p></div>
+      <button onclick="document.getElementById('stream-detail-box').style.display='none'" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem .9rem;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif">Close ✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      ${s.subs.map(sub=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;font-size:.875rem;color:var(--muted)"><span style="color:${s.color};margin-right:.4rem">→</span>${sub}</div>`).join('')}
+    </div>
+    <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem">Top careers in this stream</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem">${s.top.map(k=>`<button onclick="document.getElementById('explorer').scrollIntoView({behavior:'smooth'});setTimeout(()=>showCareer('${k}'),400)" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;border-radius:100px;cursor:pointer;font-size:.8rem;font-family:'DM Sans',sans-serif;transition:all .2s" onmouseover="this.style.borderColor='${s.color}';this.style.color='${s.color}'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">${careers[k]?careers[k].title:k}</button>`).join('')}</div>`;
+  box.style.display='block';
+  setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+
+// COMPARE TABLE
+const compareRows=[
+  {f:'Income potential',s:5,c:4,a:3,d:3},
+  {f:'Study difficulty',s:5,c:3,a:2,d:2},
+  {f:'Competition level',s:5,c:4,a:3,d:2},
+  {f:'Govt job options',s:4,c:3,a:5,d:3},
+  {f:'AI-proof careers',s:4,c:3,a:5,d:4},
+  {f:'Global opportunities',s:5,c:4,a:3,d:3},
+  {f:'Work-life balance',s:3,c:4,a:4,d:4},
+  {f:'Education cost',s:2,c:3,a:4,d:5},
+];
+function mkDots(n,cls){return[1,2,3,4,5].map(i=>`<div class="d${i<=n?' f-'+cls:''}"></div>`).join('')}
+document.getElementById('compare-body').innerHTML=compareRows.map(r=>`
+  <tr>
+    <td><span class="factor-name">${r.f}</span></td>
+    <td><div class="dots-row">${mkDots(r.s,'sci')}</div></td>
+    <td><div class="dots-row">${mkDots(r.c,'com')}</div></td>
+    <td><div class="dots-row">${mkDots(r.a,'art')}</div></td>
+    <td><div class="dots-row">${mkDots(r.d,'dip')}</div></td>
+  </tr>`).join('');
+
+// QUIZ
+const questions=[
+  {q:'When you have free time, what do you enjoy most?',sub:'Be honest — no wrong answers here.',opts:[{t:'Gaming, coding, or building things',v:'sci'},{t:'Reading, writing, or debating',v:'art'},{t:'Business ideas or making money',v:'com'},{t:'Creating art, videos, or designs',v:'dip'}]},
+  {q:'Which future sounds most exciting to you?',sub:'Pick the one that makes your heart beat faster.',opts:[{t:'Building a tech product millions use',v:'sci'},{t:'Running my own business',v:'com'},{t:'Changing society through law or policy',v:'art'},{t:'Creating content or working remotely',v:'dip'}]},
+  {q:'How hard are you willing to study?',sub:'This is just about realistic planning, not judgment.',opts:[{t:'I can grind hard for 2–4 years (JEE/NEET level)',v:'sci'},{t:'Moderate effort, manageable exams',v:'com'},{t:'I prefer depth over difficulty',v:'art'},{t:'I want to learn skills and work early',v:'dip'}]},
+  {q:'What matters most in your career?',sub:'Pick your single top priority.',opts:[{t:'Maximum salary and financial freedom',v:'com'},{t:'Job stability and government security',v:'art'},{t:'Creative freedom and self-expression',v:'dip'},{t:'Solving complex problems with tech',v:'sci'}]},
+  {q:'Which subject did you genuinely enjoy?',sub:'Not the one you scored highest in — the one you liked.',opts:[{t:'Maths and Science',v:'sci'},{t:'Accounts, Business, Economics',v:'com'},{t:'History, English, Social Studies, Art',v:'art'},{t:'Physical education, practical work, crafts',v:'dip'}]},
+];
+const quizResults={
+  sci:{label:'Science stream',color:'var(--sci)',emoji:'🔬',desc:'You have a strong analytical and technical mind. Science opens the door to some of the most exciting and highest-paying careers — from AI and engineering to medicine and space research.',careers:['software','doctor','aiml','pilot','architect']},
+  com:{label:'Commerce stream',color:'var(--com)',emoji:'📈',desc:'You think in terms of systems, money, and strategy. Commerce leads to business, finance, and entrepreneurship careers that can make you financially independent.',careers:['ca','mba','banker','webdev','youtube']},
+  art:{label:'Arts / Humanities',color:'var(--art)',emoji:'🎨',desc:'You are a deep thinker, communicator, and someone who wants to change the world. Arts careers are far more powerful than people give them credit for.',careers:['ias','lawyer','teacher','psychologist','design']},
+  dip:{label:'Diploma / Skill route',color:'var(--dip)',emoji:'🛠️',desc:'You learn best by doing and want to earn sooner rather than later. The skill-based path is incredibly smart — practical, fast, and increasingly well-paid in India and globally.',careers:['webdev','design','youtube','webdev','teacher']},
+};
+let qi=0,ans=[];
+function initQuiz(){qi=0;ans=[];renderQuiz()}
+function renderQuiz(){
+  const wrap=document.getElementById('quiz-wrap');
+  if(qi>=questions.length){showResult(wrap);return}
+  const q=questions[qi];
+  const prog=questions.map((_,i)=>`<div class="qp-dot${i<qi?' done':i===qi?' active':''}"></div>`).join('');
+  wrap.innerHTML=`
+    <div class="quiz-progress">${prog}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-sub">${q.sub}</div>
+    <div class="quiz-opts">${q.opts.map((o,i)=>
+      `<div class="qopt" onclick="answerQ('${o.v}',this)">
+        <div class="qopt-icon">${['🔹','🔸','🔷','🔶'][i]}</div>
+        <div class="qopt-text">${o.t}</div>
+      </div>`).join('')}
+    </div>`;
+}
+function answerQ(v,el){
+  el.classList.add('selected');
+  ans.push(v);
+  setTimeout(()=>{qi++;renderQuiz()},320);
+}
+function showResult(wrap){
+  const freq={};ans.forEach(a=>freq[a]=(freq[a]||0)+1);
+  const top=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0];
+  const r=quizResults[top]||quizResults.sci;
+  const cCards=r.careers.filter(k=>careers[k]).map(k=>{const c=careers[k];return`
+    <div class="rc">
+      <h4>${c.title}</h4>
+      <p>${c.tagline}</p>
+      <div class="rc-sal">${c.salary}</div>
+    </div>`}).join('');
+  wrap.innerHTML=`<div class="quiz-result">
+    <div class="result-header">
+      <div class="result-emoji">${r.emoji}</div>
+      <span class="result-stream" style="background:rgba(255,255,255,0.06);border:1px solid ${r.color};color:${r.color}">${r.label}</span>
+      <h2>This is your best fit</h2>
+      <p>${r.desc}</p>
+    </div>
+    <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem">Top careers for you</div>
+    <div class="result-careers">${cCards}</div>
+    <div style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap">
+      <button onclick="initQuiz()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:.65rem 1.5rem;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">Retake quiz</button>
+      <a href="#explorer" style="background:${r.color};color:#fff;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;font-size:.9rem;font-weight:500">Explore careers →</a>
+    </div>
+  </div>`;
+}
+initQuiz();
+
+// MYTHS
+const myths=[
+  {false:'Science is the best stream — everyone should take it.',truth:'Science is one of 6 great paths. Arts gives IAS, Law, Psychology. Commerce gives CA and MBA. Diploma gives web development jobs in months. The best stream is the one that matches YOUR strengths — not society\'s expectations.'},
+  {false:'Low marks mean no future.',truth:'Marks only gate a few specific exams (NEET, JEE). For web development, design, content creation, entrepreneurship, and digital marketing — your skill and portfolio beat any percentage. A web developer with a GitHub portfolio earns more than many graduates.'},
+  {false:'Arts students can\'t earn well.',truth:'IAS officers get ₹56k salary + bungalow + car + staff. Top lawyers earn ₹50 LPA+. Content creators earn crores. Psychologists are in massive demand post-COVID. Arts career ceilings are extremely high for those who commit.'},
+  {false:'ITI / Diploma is for weak students.',truth:'ITI electricians in the Gulf earn ₹5–8 LPA. Web developers without degrees earn ₹20+ LPA. Polytechnic graduates get jobs 1 year faster than B.Tech grads. Skill is the currency of the 21st century — not your degree name.'},
+  {false:'You must choose your entire life at age 15.',truth:'Most successful people pivot careers at least once. Your 11th stream choice is not permanent. Careers evolve. Stay curious, keep learning, and remember — the skills you build matter far more than the exact stream you choose today.'},
+  {false:'You need IIT to succeed in tech.',truth:'Thousands of non-IIT engineers lead successful careers at Google, Microsoft, startups, and abroad. Your skills, portfolio, and problem-solving ability matter far more than your college name in most tech companies.'},
+];
+document.getElementById('myths-wrap').innerHTML=myths.map((m,i)=>`
+  <div class="myth-item">
+    <div class="myth-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="myth-body">
+      <div class="myth-false">❌ Myth</div>
+      <div class="myth-text">${m.false}</div>
+      <div class="myth-truth-label">✅ Reality</div>
+      <div class="myth-truth-text">${m.truth}</div>
+    </div>
+  </div>`).join('');
+
+// NAV scroll effect
+window.addEventListener('scroll',()=>{
+  const nav=document.querySelector('nav');
+  nav.style.borderBottomColor=window.scrollY>50?'rgba(255,255,255,0.1)':'rgba(255,255,255,0.04)';
+});
+</script>
+</body>
+</html>
